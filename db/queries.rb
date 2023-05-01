@@ -1,20 +1,5 @@
 module Queries
-  def self.migration
-   'CREATE TABLE ips
-      (
-        ip CHARACTER VARYING(39) PRIMARY KEY,
-        ipv6 BOOLEAN DEFAULT false,
-        enabled BOOLEAN DEFAULT true
-      );
-    CREATE TABLE ip_stat_units
-      (
-        id SERIAL PRIMARY KEY,
-        ip CHARACTER VARYING(39),
-        rtt REAL,
-        created_at TIMESTAMP
-      );'
-  end
-
+  
   def self.add_ip(ip, ipv6=false, enabled=true)
     "INSERT INTO ips (ip, ipv6, enabled) VALUES ('#{ip}', #{ipv6}, #{enabled});"
   end

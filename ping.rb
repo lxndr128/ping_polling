@@ -2,10 +2,11 @@ require 'async'
 require 'async/semaphore'
 require_relative 'db/db_client'
 require_relative 'db/queries'
+require_relative 'db/migration'
 
 class Ping
   def initialize
-    migrate
+    Migration.run
 
     while true do
       @resulting_query = Queries.add_stat_unit(part: 1)
@@ -37,11 +38,4 @@ class Ping
     rtt = 'NULL' unless rtt
     @resulting_query += Queries.add_stat_unit(ip:, rtt:, part: 2)
   end
-
-  def migrate
-    unless File.exists?('db/.migrated')
-      DbClient.query(Queries.migration)
-      File.new("db/.migrated", "w")
-    end
-  end 
 end

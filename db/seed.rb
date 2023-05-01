@@ -1,5 +1,6 @@
-require_relative 'queries'
 require_relative 'db_client'
+require_relative 'migration'
+require_relative 'queries'
 
 def ips
   [ '173.245.59.106', 
@@ -14,9 +15,7 @@ def ips
     '31.25.98.169' ]
 end
 
-DbClient.query('DROP TABLE ips, ip_stat_units;')
-DbClient.query(Queries.migration)
-File.new("db/.migrated", "w")
+Migration.run
 
 ips.each do |ip|
   DbClient.query(Queries.add_ip(ip))
